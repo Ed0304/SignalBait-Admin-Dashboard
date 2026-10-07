@@ -1,5 +1,113 @@
-<body>
-    <header>
-        
-    </header>
-</body>
+<header class="sticky top-0 z-50 border-b border-slate-200 bg-white">
+  <div class="flex h-16 items-center justify-between px-6">
+
+    <!-- Brand -->
+    <div class="flex items-center gap-3">
+      <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 text-white">
+        🛡
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-lg font-bold tracking-tight text-slate-900">
+          SignalBait
+        </span>
+
+        <span
+          class="rounded-md bg-red-50 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-red-600"
+        >
+          Admin
+        </span>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="hidden items-center gap-1 md:flex">
+
+      <a
+        routerLink="/dashboard"
+        routerLinkActive="bg-slate-100 text-slate-900"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="rounded-lg px-4 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+      >
+        Dashboard
+      </a>
+
+      <a
+        routerLink="/tickets"
+        routerLinkActive="bg-slate-100 text-slate-900"
+        class="rounded-lg px-4 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+      >
+        Tickets
+      </a>
+
+      <a
+        routerLink="/reports"
+        routerLinkActive="bg-slate-100 text-slate-900"
+        class="rounded-lg px-4 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+      >
+        Reports
+      </a>
+
+    </nav>
+
+    <!-- Right side -->
+    <div class="flex items-center gap-4">
+
+      <!-- Notifications -->
+      <button
+        type="button"
+        class="relative rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+        aria-label="Notifications"
+      >
+        🔔
+
+        <span
+          class="absolute right-1 top-1 h-2 w-2 rounded-full bg-red-500"
+        ></span>
+      </button>
+
+      <!-- Logged-in state -->
+      @if (authService.isLoggedIn()) {
+        <div class="flex items-center gap-3">
+
+          <div class="hidden text-right sm:block">
+            <p class="text-sm font-semibold text-slate-900">
+              {{ authService.username() }}
+            </p>
+
+            <p class="text-xs text-slate-500">
+              Administrator
+            </p>
+          </div>
+
+          <div
+            class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white"
+          >
+            {{ authService.username().charAt(0).toUpperCase() }}
+          </div>
+
+          <button
+            type="button"
+            (click)="logout()"
+            class="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+          >
+            Logout
+          </button>
+
+        </div>
+      }
+
+      <!-- Logged-out state -->
+      @if (!authService.isLoggedIn()) {
+        <a
+          routerLink="/login"
+          class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+        >
+          Login
+        </a>
+      }
+
+    </div>
+
+  </div>
+</header>
