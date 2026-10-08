@@ -1,1 +1,166 @@
-<p>analytics works!</p>
+<div class="space-y-6">
+
+  <!-- Main chart area -->
+  <section
+    class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
+  >
+
+    <div class="mb-6">
+      <h1 class="text-xl font-semibold text-gray-900">
+        Analytics
+      </h1>
+
+      <p class="mt-1 text-sm text-gray-500">
+        Explore ticket data using different visualizations.
+      </p>
+    </div>
+
+    <!-- Chart -->
+    <div
+      class="rounded-lg border border-gray-200 bg-gray-50 p-4"
+    >
+
+      <div
+        echarts
+        [options]="chartOption"
+        class="h-[400px] w-full"
+      ></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Chart settings -->
+  <section
+    class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
+  >
+
+    <div class="mb-6">
+      <h2 class="text-lg font-semibold text-gray-900">
+        Chart Settings
+      </h2>
+
+      <p class="mt-1 text-sm text-gray-500">
+        Choose how the ticket data should be visualized.
+      </p>
+    </div>
+
+
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+
+      <!-- Chart type -->
+      <div>
+        <label
+          for="chart-type"
+          class="mb-2 block text-sm font-medium text-gray-700"
+        >
+          Chart Type
+        </label>
+
+        <select
+          id="chart-type"
+          [(ngModel)]="chartType"
+          (change)="onSettingsChange()"
+          class="w-full rounded-lg border border-gray-300
+                 bg-white px-3 py-2.5 text-sm text-gray-700
+                 outline-none transition
+                 focus:border-gray-500
+                 focus:ring-2 focus:ring-gray-200"
+        >
+
+          <option value="bar">
+            Bar Chart
+          </option>
+
+          <option value="pie">
+            Pie Chart
+          </option>
+
+          <option value="line">
+            Line Chart
+          </option>
+
+        </select>
+      </div>
+
+
+      <!-- Analyse by -->
+      <div>
+        <label
+          for="analyse-by"
+          class="mb-2 block text-sm font-medium text-gray-700"
+        >
+          Analyse By
+        </label>
+
+        <select
+          id="analyse-by"
+          [(ngModel)]="analyseBy"
+          (change)="onSettingsChange()"
+          class="w-full rounded-lg border border-gray-300
+                 bg-white px-3 py-2.5 text-sm text-gray-700
+                 outline-none transition
+                 focus:border-gray-500
+                 focus:ring-2 focus:ring-gray-200"
+        >
+
+          <option value="issue_type" [disabled]="chartType == 'line'">
+            Issue Type
+          </option>
+
+          <option value="ticket_status" [disabled]="chartType == 'line' ">
+            Ticket Status
+          </option>
+
+          <option
+            value="created_at"
+            [disabled]="chartType !== 'line'"
+          >
+            Time / Trend
+          </option>
+
+        </select>
+      </div>
+
+
+      <!-- Sort order -->
+      <div>
+        <label
+          for="sort-order"
+          class="mb-2 block text-sm font-medium text-gray-700"
+        >
+          Sort Order
+        </label>
+
+        <select
+          id="sort-order"
+          [(ngModel)]="sortOrder"
+          (change)="onSettingsChange()"
+          [disabled]="chartType === 'pie'"
+          class="w-full rounded-lg border border-gray-300
+                 bg-white px-3 py-2.5 text-sm text-gray-700
+                 outline-none transition
+                 focus:border-gray-500
+                 focus:ring-2 focus:ring-gray-200
+                 disabled:cursor-not-allowed
+                 disabled:bg-gray-100
+                 disabled:text-gray-400"
+        >
+
+          <option value="ascending">
+            Ascending
+          </option>
+
+          <option value="descending">
+            Descending
+          </option>
+
+        </select>
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

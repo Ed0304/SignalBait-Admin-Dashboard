@@ -24,4 +24,27 @@ export class TicketService {
       {withCredentials:true}
     );
   }
+
+  updateTicketStatus(ticketId: number, status: string) {
+    return this.http.patch(
+      `${this.apiUrl}/tickets/${ticketId}/`,
+      {
+        ticket_status: status
+      },
+      {
+        withCredentials: true
+      }
+    );
+  }
+
+deleteTicket(ticketId: number) {
+  return this.http.delete(
+    `${this.apiUrl}/tickets/${ticketId}/`,
+    {
+      withCredentials: true
+    }
+  );
+}
+
+
 }

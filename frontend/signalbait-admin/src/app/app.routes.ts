@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Login } from './pages/login/login';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Analytics } from './pages/analytics/analytics';
+import { Assign } from './pages/assign/assign';
 import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
 
@@ -28,6 +29,11 @@ export const routes: Routes = [
   {
     path: "analytics",
     component: Analytics,
+    canActivate: [authGuard]
+  },
+  {
+    path: "assign",
+    component: Assign,
     canActivate: [authGuard]
   }
 ];
