@@ -11,7 +11,7 @@ interface UserResponse {
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8000/api';
+  private apiUrl = 'https://signal-bait-admin-dashboard-sand.vercel.app/api';
 
   // Authentication state
   isLoggedIn = signal(false);

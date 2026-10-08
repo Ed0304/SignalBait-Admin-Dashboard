@@ -25,7 +25,7 @@ export class AnalyticsService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:8000/api';
+  private apiUrl = 'https://signal-bait-admin-dashboard-sand.vercel.app/api';
 
   getAnalytics(
     analyseBy: string,
