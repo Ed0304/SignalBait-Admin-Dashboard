@@ -24,7 +24,10 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "signal-bait-admin-dashboard-sand.vercel.app",
+]
+
 load_dotenv()
 
 # Application definition
@@ -137,3 +140,8 @@ MAILERS = {
 }
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "None"
