@@ -76,7 +76,7 @@ CORS_ALLOW_CREDENTIALS = True
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:4200"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:4200", "https://signal-bait-admin-dashboard.vercel.app"]
 
 DATABASES = {
     'default': {
