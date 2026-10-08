@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
@@ -8,23 +8,11 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
-export class Header implements OnInit {
-
+export class Header {
   authService = inject(AuthService);
   private router = inject(Router);
 
-  ngOnInit() {
-    this.authService.getCurrentUser().subscribe({
-      next: (response) => {
-        this.authService.setAuthenticated(response.username);
-      },
-      error: () => {
-        this.authService.clearAuthentication();
-      }
-    });
-  }
-
-  logout() {
+  logout(): void {
     this.authService.logout().subscribe({
       next: () => {
         this.authService.clearAuthentication();

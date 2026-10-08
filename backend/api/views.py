@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-
+from .models import Ticket
 
 # Create your views here.
 @csrf_exempt
@@ -48,11 +48,43 @@ def logout(request):
     })
 
 
-@login_required
 def me(request):
-    return JsonResponse(
+    if not request.user.is_authenticated:
+        return JsonResponse(
+            {"message": "Authentication required"},
+            status=401
+        )
+
+    return JsonResponse({
+        "username": request.user.username,
+        "is_authenticated": True
+    })
+
+
+def tickets(request):
+    if not request.user.is_authenticated:
+        return JsonResponse(
+            {"message": "Authentication required"},
+            status=401
+        )
+
+    if request.method != "GET":
+        return JsonResponse(
+            {"message": "Only GET requests are allowed."},
+            status=405
+        )
+
+    ticket_list = Ticket.objects.all()
+
+    data = [
         {
-            "username": request.user.username,
-            "is_authenticated": request.user.is_authenticated
+            "ticket_id": ticket.ticket_id,
+            "created_at": ticket.created_at,
+            "issue_type": ticket.issue_type,
+            "reporter_email": ticket.reporter_email,
+            "ticket_status": ticket.ticket_status,
         }
-    )
+        for ticket in ticket_list
+    ]
+
+    return JsonResponse(data, safe=False)

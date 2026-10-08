@@ -60,4 +60,16 @@ export class AuthService {
     this.isLoggedIn.set(false);
     this.username.set('');
   }
+
+  checkSession() {
+    return this.http.get<{
+        username: string;
+        is_authenticated: boolean;
+    }>(
+        `${this.apiUrl}/me/`,
+        {
+        withCredentials: true
+        }
+    );
+    }
 }

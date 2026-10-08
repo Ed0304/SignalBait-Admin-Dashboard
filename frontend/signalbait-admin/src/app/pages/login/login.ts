@@ -10,20 +10,26 @@ import { Router } from '@angular/router';
   styleUrl: './login.css',
 })
 export class Login {
+
   username = '';
   password = '';
 
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  login() {
+  login(): void {
     this.authService.login(this.username, this.password).subscribe({
       next: (response) => {
         console.log('Login successful:', response);
+
+        // Update Angular authentication state
+        this.authService.setAuthenticated(response.username);
+
+        // Now the auth guard will allow us through
         this.router.navigate(['/dashboard']);
       },
       error: (error) => {
-        console.log('Login failed:', error);
+        console.error('Login failed:', error);
       }
     });
   }
