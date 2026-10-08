@@ -41,30 +41,17 @@
       </a>
 
       <a
-        routerLink="/assign"
+        routerLink="/audit"
         routerLinkActive="bg-slate-100 text-slate-900"
         class="rounded-lg px-4 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
       >
-        Assignment
+        Audit
       </a>
 
     </nav>
 
     <!-- Right side -->
     <div class="flex items-center gap-4">
-
-      <!-- Notifications -->
-      <button
-        type="button"
-        class="relative rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
-        aria-label="Notifications"
-      >
-        🔔
-
-        <span
-          class="absolute right-1 top-1 h-2 w-2 rounded-full bg-red-500"
-        ></span>
-      </button>
 
       <!-- Logged-in state -->
       @if (authService.isLoggedIn()) {

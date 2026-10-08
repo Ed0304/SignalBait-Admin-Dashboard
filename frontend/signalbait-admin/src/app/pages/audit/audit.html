@@ -1,0 +1,131 @@
+<div class="space-y-6">
+
+  <section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+
+    <div class="mb-6">
+      <h1 class="text-xl font-semibold text-gray-900">
+        Audit Trails
+      </h1>
+
+      <p class="mt-1 text-sm text-gray-500">
+        Review administrative actions performed within SignalBait.
+      </p>
+    </div>
+
+    <!-- Filters -->
+    <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+
+      <!-- User Filter -->
+      <div>
+        <label
+          for="userFilter"
+          class="mb-1 block text-sm font-medium text-gray-700"
+        >
+          Admin
+        </label>
+
+        <select
+          id="userFilter"
+          [(ngModel)]="selectedUser"
+          (change)="filterLogs()"
+          class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-gray-500 focus:outline-none"
+        >
+          <option value="all">All Admins</option>
+
+          @for (user of users; track user) {
+            <option [value]="user">
+              {{ user }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <!-- Date Filter -->
+      <div>
+        <label
+          for="dateFilter"
+          class="mb-1 block text-sm font-medium text-gray-700"
+        >
+          Date
+        </label>
+
+        <select
+          id="dateFilter"
+          [(ngModel)]="selectedDate"
+          (change)="filterLogs()"
+          class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-gray-500 focus:outline-none"
+        >
+          <option value="all">All Dates</option>
+
+          @for (date of dates; track date) {
+            <option [value]="date">
+              {{ date }}
+            </option>
+          }
+        </select>
+      </div>
+
+    </div>
+
+    <!-- Audit Table -->
+    <div class="overflow-x-auto">
+
+      <table class="w-full text-left text-sm">
+
+        <thead class="border-b border-gray-200 text-xs uppercase text-gray-500">
+          <tr>
+            <th class="px-4 py-3">Admin</th>
+            <th class="px-4 py-3">Action</th>
+            <th class="px-4 py-3">Ticket</th>
+            <th class="px-4 py-3">Time</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (log of filteredLogs; track log.id) {
+
+            <tr class="border-b border-gray-100">
+
+              <td class="px-4 py-3 font-medium text-gray-900">
+                {{ log.username }}
+              </td>
+
+              <td class="px-4 py-3 text-gray-700">
+                {{ formatAction(log.action) }}
+              </td>
+
+              <td class="px-4 py-3 text-gray-700">
+                {{ log.ticket_id ?? '—' }}
+              </td>
+
+              <td class="px-4 py-3 text-gray-500">
+                {{ log.created_at | date:'medium' }}
+              </td>
+
+            </tr>
+
+          }
+
+          @if (filteredLogs.length === 0) {
+
+            <tr>
+              <td
+                colspan="4"
+                class="px-4 py-8 text-center text-gray-500"
+              >
+                No audit logs found.
+              </td>
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+</div>

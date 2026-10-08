@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-from .models import Ticket
+from .models import Ticket, AuditLog
 
 
 # =========================
@@ -31,10 +31,11 @@ def login(request):
     if user is not None:
         django_login(request, user)
 
-        return JsonResponse({
-            "message": "Login successful",
-            "username": user.username
-        })
+        AuditLog.objects.create(
+            user=user,
+            action="LOGIN"
+        )
+    
 
     return JsonResponse(
         {"message": "Invalid username or password"},
@@ -54,7 +55,15 @@ def logout(request):
             status=405
         )
 
+    user = request.user
+
     django_logout(request)
+
+    if user.is_authenticated:
+        AuditLog.objects.create(
+            user=user,
+            action="LOGOUT"
+        )
 
     return JsonResponse({
         "message": "Logout successful"
@@ -163,6 +172,12 @@ def ticket_detail(request, ticket_id):
         ticket.ticket_status = new_status
         ticket.save(update_fields=["ticket_status"])
 
+        AuditLog.objects.create(
+            user=request.user,
+            action="UPDATED_TICKET_STATUS",
+            ticket_id=ticket.ticket_id
+        )
+
         return JsonResponse({
             "message": "Ticket status updated successfully.",
             "ticket_id": ticket.ticket_id,
@@ -176,8 +191,15 @@ def ticket_detail(request, ticket_id):
 
     if request.method == "DELETE":
 
+        AuditLog.objects.create(
+            user=request.user,
+            action="DELETED_TICKET",
+            ticket_id=ticket.ticket_id
+        )
+
         ticket.delete()
 
+        
         return JsonResponse({
             "message": "Ticket deleted successfully.",
             "ticket_id": ticket_id
@@ -248,3 +270,32 @@ def analytics(request):
         "issues": list(issue_data),
         "daily": list(daily_data),
     })
+
+def audit_logs(request):
+
+    if not request.user.is_authenticated:
+        return JsonResponse(
+            {"message": "Authentication required"},
+            status=401
+        )
+
+    if request.method != "GET":
+        return JsonResponse(
+            {"message": "Only GET requests are allowed."},
+            status=405
+        )
+
+    logs = AuditLog.objects.select_related("user").all()
+
+    data = [
+        {
+            "id": log.id,
+            "username": log.user.username if log.user else "Unknown",
+            "action": log.action,
+            "ticket_id": log.ticket_id,
+            "created_at": log.created_at,
+        }
+        for log in logs
+    ]
+
+    return JsonResponse(data, safe=False)

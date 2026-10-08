@@ -12,5 +12,6 @@ urlpatterns = [
         views.ticket_detail,
         name="ticket-detail"
     ),
-    path("analytics/",views.analytics)
+    path("analytics/",views.analytics),
+    path("audit-logs/", views.audit_logs, name="audit-logs"),
 ]
