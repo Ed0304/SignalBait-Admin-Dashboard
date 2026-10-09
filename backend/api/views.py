@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 from .models import Ticket, AuditLog
-
+from .email_service import send_status_update_email
 
 # =========================
 # LOGIN
@@ -147,6 +147,7 @@ def ticket_detail(request, ticket_id):
         )
 
 
+    
     # =========================
     # UPDATE STATUS
     # =========================
@@ -169,6 +170,17 @@ def ticket_detail(request, ticket_id):
                 status=400
             )
 
+        # Prevent duplicate notifications for unchanged statuses.
+        old_status = ticket.ticket_status
+
+        if old_status == new_status:
+            return JsonResponse({
+                "message": "Ticket status is unchanged.",
+                "ticket_id": ticket.ticket_id,
+                "ticket_status": ticket.ticket_status
+            })
+
+        # Save the status first.
         ticket.ticket_status = new_status
         ticket.save(update_fields=["ticket_status"])
 
@@ -178,11 +190,20 @@ def ticket_detail(request, ticket_id):
             ticket_id=ticket.ticket_id
         )
 
+        # Send email after the status has been saved.
+        email_sent = send_status_update_email(
+            recipient_email=ticket.reporter_email,
+            ticket_id=ticket.ticket_id,
+            new_status=ticket.ticket_status,
+        )
+
         return JsonResponse({
             "message": "Ticket status updated successfully.",
             "ticket_id": ticket.ticket_id,
-            "ticket_status": ticket.ticket_status
+            "ticket_status": ticket.ticket_status,
+            "email_sent": email_sent,
         })
+
 
 
     # =========================
