@@ -29,9 +29,10 @@ The administrative dashboard provides authenticated administrators with tools to
 ## Architecture
 
 ```text
+Public Application (Ticketing System)
                     ┌──────────────────────┐
                     │   Public Frontend    │
-                    │      Vue + Vite      │
+                    │      Vue + Vite      │  
                     └──────────┬───────────┘
                                │
                                ▼
@@ -42,9 +43,21 @@ The administrative dashboard provides authenticated administrators with tools to
                                │
                                ▼
                     ┌──────────────────────┐
-                    │     ML Service       │
-                    │    Python/FastAPI    │
+                    │     PostgreSQL       │
                     └──────────────────────┘
+Public Application (Message-Scanning Service)
+
+                    ┌──────────────────────┐
+                    │   Public Frontend    │
+                    │      Vue + Vite      │  
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │   ML/AI Operations   │
+                    │       FastAPI        │
+                    └──────────────────────┘
+
 
 
                     ┌──────────────────────┐
